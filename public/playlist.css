@@ -1,0 +1,16 @@
+/* Keep song and requester on one line, with independent ellipsis. */
+.scene .chat{display:none!important}
+.playlist-caption{margin:.65cqw 0 .2cqw;font-size:.65cqw;font-weight:700;color:#668c9a;letter-spacing:.04cqw}
+#scene-queue{margin-top:0}
+#scene-queue li:not(.portrait-queue-empty){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,42%);gap:.5cqw;align-items:center;line-height:1.3}
+#scene-queue .queue-song{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.8cqw;font-weight:700;color:#31566a}
+#scene-queue .queue-requester{display:block;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;font-size:.65cqw;color:#ae6281}
+.portrait-layout .playlist-caption{margin:.4cqw 0 .15cqw;font-size:1.35cqw;color:#6d8796}
+.portrait-layout #scene-queue{gap:0;margin-top:0}
+.portrait-layout #scene-queue li:not(.portrait-queue-empty){padding:.4cqw .1cqw;gap:.6cqw}
+.portrait-layout #scene-queue .queue-song{font-size:1.8cqw;line-height:1.25}
+.portrait-layout #scene-queue .queue-requester{font-size:1.3cqw;line-height:1.25;color:#a16f22}
+.portrait-redesign .playlist-caption{font-size:1.6cqw;margin:1cqw .6cqw .2cqw;color:#6c8988}
+.portrait-redesign #scene-queue li:not(.portrait-queue-empty){padding:.55cqw .7cqw}
+.portrait-redesign #scene-queue .queue-song{font-size:2.05cqw;color:#365964}
+.portrait-redesign #scene-queue .queue-requester{font-size:1.6cqw;color:#6c8988}

@@ -1,0 +1,64 @@
+/* Reference composition, mapped to the existing 1080×1920 / 1440×2560 capture. */
+.attic-layout .scene{background:#181827 url('/attic-radio.jpg') center/100% 100% no-repeat;color:#ffe6ad;animation:none;font-family:'Microsoft YaHei','PingFang SC',sans-serif}
+.attic-layout .scene:before,.attic-layout .scene:after{display:none}
+.attic-layout .portrait-safe-frame{inset:0;transform:none}
+.attic-layout .character-wrap,.attic-layout .portrait-brand,.attic-layout .portrait-subtitle,.attic-layout .scene-top,.attic-layout .scene-title,.attic-layout .rules,.attic-layout .music,.attic-layout .hd-aquarium{display:none!important}
+.attic-radio{position:absolute;z-index:5;left:3.65%;top:12.03%;width:80.7%;height:12.4%;border-radius:4.5cqw;background:linear-gradient(112deg,#171723,#1c1a25 65%,#161722);box-shadow:inset 0 0 2cqw #090a15,0 0 .5cqw #d6a26144;overflow:hidden;color:#ffe4ab;container-type:normal}
+.attic-now{position:absolute;inset:0 33% 0 0}
+.attic-record{position:absolute;left:4%;top:15%;width:32%;height:51%}
+.attic-record:before{content:'';position:absolute;right:0;top:5%;width:80%;height:90%;border-radius:50%;background:repeating-radial-gradient(circle,#18171b 0 4%,#44404a 4.5% 5%,#19181e 5.5% 7%);border:1px solid #ae8147}
+.attic-cover{position:absolute;inset:0 17% 0 0;background:#292d4d url('/attic-radio.jpg') 6.526% 14.833%/750.685% 1600% no-repeat;border:1px solid #bdb5c0;border-radius:.6cqw;box-shadow:.8cqw .4cqw 1cqw #0008}
+.attic-playing{position:absolute;left:41%;top:3%;font-size:2.65cqw;letter-spacing:.25cqw;color:#fff1c9}
+.attic-track{position:absolute;left:40%;right:3%;top:20%;height:30%;display:flex;align-items:center}
+.attic-layout #song-title{font-size:6.3cqw;line-height:1.15;color:#ffe8a3;font-weight:800;text-shadow:0 0 1.3cqw #ffad4f55;margin:0;padding:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border:0;background:none;box-shadow:none;letter-spacing:.05cqw}
+.attic-spectrum{position:absolute;left:6%;bottom:17%;width:56%;height:15%;display:flex;align-items:flex-end;gap:.65cqw}
+.attic-spectrum i{flex:1;min-width:0;height:var(--bar);background:#efb24d;box-shadow:0 0 .6cqw #ffb33b99;animation:attic-bars .8s ease-in-out infinite alternate;animation-delay:var(--delay);animation-play-state:paused}
+.attic-radio.is-playing .attic-spectrum i{animation-play-state:running}
+.attic-time{position:absolute;bottom:15%;right:3%;font-size:2.25cqw;font-variant-numeric:tabular-nums;color:#e6d9c5;white-space:nowrap}
+.attic-progress{position:absolute;bottom:7%;left:6%;right:3%;height:.9cqw;border-radius:2cqw;background:#63515d;box-shadow:inset 0 .2cqw .4cqw #0008}
+.attic-progress i{display:block;position:relative;width:var(--progress,0%);height:100%;background:#f9cf80;border-radius:inherit;box-shadow:0 0 1cqw #f8bc5d66}
+.attic-progress i:after{content:'';position:absolute;right:-.8cqw;top:50%;width:1.7cqw;height:1.7cqw;border-radius:50%;background:#ffe3a7;transform:translateY(-50%);box-shadow:0 0 .7cqw #ffbf65}
+.attic-upnext{position:absolute;top:6%;bottom:6%;left:67.4%;right:2%;border-left:.25cqw solid #af804b;padding-left:2.3cqw}
+.attic-upnext h2{font-size:3.55cqw;font-weight:600;line-height:1;margin:0 0 1.2cqw;letter-spacing:.15cqw;color:#ffe9b6;text-shadow:0 0 .6cqw #edb36d55}
+.attic-layout #scene-queue{display:flex;flex-direction:column;gap:.8cqw;padding:0;margin:0;list-style:none}
+.attic-layout #scene-queue li:not(.portrait-queue-empty){position:relative;display:block;min-height:0;line-height:1.1;padding:.3cqw 1cqw;border:1px solid #775643;border-radius:1.2cqw;background:linear-gradient(110deg,#493526aa,#201e26);box-shadow:inset 0 .15cqw .2cqw #ffdb9e11;overflow:hidden}
+.attic-layout #scene-queue .queue-song{display:block;max-width:100%;color:#ffe9bc;font-size:2.8cqw;line-height:1.15;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.attic-layout #scene-queue .queue-requester{display:none}
+.attic-layout #scene-queue li:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4.5cqw;background:linear-gradient(90deg,#ed9f2c15,transparent);pointer-events:none}
+.attic-layout #scene-queue li.portrait-queue-empty{font-size:2.65cqw;line-height:1.6;color:#c8ab86;background:none;box-shadow:none;padding:1cqw 0;white-space:normal}
+.attic-layout .attic-upnext .playlist-caption{position:absolute;bottom:-.5cqw;right:0;font-size:1.5cqw;line-height:1;color:#b79871;letter-spacing:0;margin:0}
+.attic-reply-paper{position:absolute;left:12%;top:65.25%;width:76%;min-height:4.3%;z-index:10;padding:1.3cqw 3cqw 1.4cqw;color:#49301e;filter:drop-shadow(0 .6cqw .6cqw #130d1688);background:repeating-linear-gradient(12deg,#b4834020 0 1px,transparent 1px 5px),linear-gradient(110deg,#f7dbad,#ffe9c5 45%,#e8bd85);clip-path:polygon(0 3%,3% 0,12% 2%,26% 0,44% 2%,63% 0,79% 2%,96% 0,100% 3%,99.7% 35%,100% 68%,99.5% 99%,87% 97%,68% 100%,47% 98%,29% 100%,12% 97%,0 100%,.3% 65%,0 32%)}
+.attic-reply-paper:before,.attic-reply-paper:after{content:'';position:absolute;top:.8cqw;width:1.2cqw;height:1.2cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9ac,#a06b31 48%,#55321f 77%,#f1ce8d);box-shadow:0 .3cqw .35cqw #70422277;pointer-events:none}
+.attic-reply-paper:before{left:1cqw}.attic-reply-paper:after{right:1cqw}
+.attic-desk-clear{position:absolute;left:32.3%;top:64.6%;width:45.5%;height:5.8%;z-index:1;pointer-events:none;background:linear-gradient(90deg,#dc994d88,transparent),#482d28 url('/attic-radio.jpg') 87.607% 68%/685% 2461.54% no-repeat;mask-image:linear-gradient(90deg,transparent,#000 8% 92%,transparent);}
+.has-attic-character .attic-desk-clear{opacity:0}
+.attic-layout .scene.reply-panel-hidden .attic-reply-paper{display:none}
+.attic-layout .attic-reply-paper .reply-card{position:relative;inset:auto;width:100%;height:auto;min-height:0;max-height:none;z-index:auto;padding:0;border:0;border-radius:0;background:none;box-shadow:none;color:#49301e;animation:none}
+.attic-layout .reply-card:before,.attic-layout .reply-card:after,.attic-layout .reply-bottom,.attic-layout .reply-question{display:none}
+.attic-layout .attic-reply-paper .host-name{display:none}
+.attic-layout .attic-reply-paper .reply-question{display:block;margin:0 0 1cqw;padding:0 0 .8cqw;border:0;border-bottom:1px solid #9c6c3944;background:none;border-radius:0}
+.attic-layout .attic-reply-paper .reply-question>span{display:none}
+.attic-layout .attic-reply-paper #reply-question{margin:0;padding:0;color:#86603f;font-size:2.35cqw;line-height:1.6;font-weight:600;white-space:pre-wrap;overflow-wrap:anywhere;max-height:10cqw;overflow:auto;scrollbar-width:none}
+.attic-answer-row{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:0}
+.attic-answer-label{font-size:2.85cqw;line-height:1.65;font-weight:700;color:#674020;white-space:nowrap}
+.attic-layout .host-name{top:-2cqw;left:2cqw;border:.2cqw solid #c49764;border-radius:1cqw;padding:.6cqw 1.6cqw;background:#f1d0a2;color:#50331f;font-size:2.4cqw;box-shadow:0 .3cqw .8cqw #21152444}
+.attic-layout .reply-text{font-size:2.85cqw!important;line-height:1.65;color:#49301e;margin:0;max-height:30cqw;overflow:auto;font-weight:600;text-shadow:none}
+.attic-layout .scene{--dance-y:44%;--dance-w:85%}
+.attic-layout .roaming-cat{z-index:11;pointer-events:none}
+@keyframes attic-bars{from{transform:scaleY(.5);opacity:.75}to{transform:scaleY(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.attic-spectrum i{animation:none}}
+.motion-paused .attic-spectrum i{animation:none}
+.attic-character{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.attic-character-canvas,.attic-character>svg{position:absolute;inset:0;width:100%;height:100%}
+.attic-character-canvas{display:none}
+.attic-character.has-motion-canvas .attic-character-canvas{display:block}
+.attic-character>svg{overflow:visible}
+.attic-lash{fill:none;stroke:#45304f;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.attic-lids,.attic-happy-sparkle,.attic-mouth,.attic-happy-mouth,.attic-thinking-brow{opacity:0}
+.attic-lids path[fill]{filter:blur(.65px)}
+.attic-blush{opacity:0;transition:opacity .45s}
+.attic-character.is-blinking .attic-lids{opacity:1}
+.attic-character[data-expression=happy] .attic-happy-sparkle,.attic-character[data-expression=happy] .attic-happy-mouth,.attic-character[data-expression=happy] .attic-blush{opacity:1}
+.attic-character[data-expression=speaking] .attic-mouth{opacity:1}
+.attic-character[data-expression=speaking] .attic-blush{opacity:.5}
+.attic-character[data-expression=thinking] .attic-thinking-brow{opacity:1}

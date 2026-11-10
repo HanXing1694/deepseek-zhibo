@@ -1,0 +1,59 @@
+/* Preview: ?layout=portrait&stage=1&design=hd. All scenery is resolution-independent. */
+.portrait-redesign .scene{background:#092d43;color:#163d50;font-family:'Microsoft YaHei UI','Microsoft YaHei',sans-serif;animation:none}
+.portrait-redesign .hd-aquarium{position:absolute;inset:0;pointer-events:none;background:#092d43 url('/aquarium-hd.svg') center/cover no-repeat;z-index:-1}
+.portrait-redesign .portrait-safe-frame{inset:7% 12% 6%;transform:none;container-type:inline-size}
+.portrait-redesign .portrait-brand{top:0;left:0;gap:1.8cqw;text-shadow:none}
+.portrait-redesign .portrait-logo{width:8cqw;height:8cqw;font-size:0;border:1px solid #ace7e6;box-shadow:none;background:#d4f3ed url('/icon.svg') center/75% no-repeat}
+.portrait-redesign .portrait-brand strong{font-size:3.4cqw;font-weight:700;letter-spacing:.25cqw;color:#f4f2df}
+.portrait-redesign .portrait-brand strong small{display:block;font:1.5cqw Arial,sans-serif;letter-spacing:.45cqw;margin:.7cqw 0 0;color:#9cd4d6}
+.portrait-redesign .portrait-brand>div>span{background:none;padding:0;margin-top:.8cqw;color:#abcece;font-size:1.65cqw;letter-spacing:.1cqw}
+.portrait-redesign .scene-top{right:0;top:1.3%}
+.portrait-redesign .scene-top .speaking-label{font-size:1.9cqw;padding:1.3cqw 1.8cqw;background:#153e50;border:1px solid #67969e;border-radius:5cqw;color:#e5f3e8;box-shadow:none;font-weight:500}
+.portrait-redesign .scene-top .equalizer b{background:#a7d9c7}
+.portrait-redesign .portrait-subtitle,.portrait-redesign .scene-title{display:block}
+.portrait-redesign .scene-title{top:7.4%;left:0;width:100%;text-align:left}
+.portrait-redesign .scene-title strong{writing-mode:horizontal-tb;font-family:'Microsoft YaHei UI',sans-serif;font-weight:500;font-size:4.5cqw;letter-spacing:.18cqw;border:0;text-shadow:none;line-height:1.6;color:#f5f1dc}
+.portrait-redesign .scene-title strong span{font-size:3.6cqw;color:#dfc28c;margin-left:1.7cqw}
+.portrait-redesign .portrait-subtitle{top:11.9%;left:0;width:100%;text-align:left;color:#a8c9ca;font-size:2cqw;letter-spacing:.25cqw;text-shadow:none}
+.portrait-redesign .ocean-sticker{display:none}
+.portrait-redesign .character-wrap{left:12%;top:16%;width:76%;height:74%;z-index:2}
+.portrait-redesign .character-puppet{max-width:none;animation:none!important}
+.portrait-redesign .eating-sprite{filter:none}
+.portrait-redesign .character-halo{inset:8% -10% 0;background:radial-gradient(ellipse,#91d4c744,transparent 65%)}
+.portrait-redesign .floating-star{display:none}
+.portrait-redesign .glass{background:#f2f3e8;color:#163d50;border:1px solid #d3e5df;border-radius:2.5cqw;box-shadow:0 1.5cqw 3cqw #02162222;backdrop-filter:none;padding:2.5cqw 1.8cqw;z-index:3}
+.portrait-redesign .glass h2{font-size:2.7cqw;color:#234c59;text-shadow:none;font-weight:700;gap:1cqw;padding:0;letter-spacing:.1cqw}
+.portrait-redesign .glass h2>span:first-child{font-size:3.3cqw;color:#438a8e}
+.portrait-redesign .portrait-shell{font-size:2.7cqw!important;color:#438a8e;text-shadow:none}
+.portrait-redesign .chat{left:0;top:18.8%;width:24.5%;height:45%;padding:2.5cqw 1.5cqw}
+.portrait-redesign .chat h2{font-size:2.6cqw}
+.portrait-redesign .comment-list{margin-top:2cqw;padding:0;mask-image:none;height:calc(100% - 8cqw)}
+.portrait-redesign .comment{display:block;margin:0;padding:1.9cqw 0;border-bottom:1px solid #d6e1da}
+.portrait-redesign .avatar{display:none}
+.portrait-redesign .comment-user{font-size:2.15cqw;color:#508487;line-height:1.45;font-weight:500;margin:0 0 .9cqw}
+.portrait-redesign .comment-text{font-size:2.85cqw;line-height:1.6;color:#143f50;font-weight:500;background:none;border-radius:0;padding:0;margin:0}
+.portrait-redesign .comment.replying .comment-text{background:#dceae2;color:#143f50;border-radius:1cqw;padding:.8cqw}
+.portrait-redesign .chat-footer{font-size:1.5cqw;color:#57817f;border-color:#ceded6;gap:.6cqw;padding-top:1.2cqw}
+.portrait-redesign .chat-footer i{background:#6aab8c}
+.portrait-redesign .rules{top:18.8%;right:0;width:27%;height:19%;padding:2.5cqw 2cqw;background:#c9e2dc}
+.portrait-redesign .rules p.portrait-song-hint{font-size:2.6cqw;line-height:1.7;text-align:left;color:#315e65;margin:2cqw 0}
+.portrait-redesign .portrait-song-command{font-size:2.8cqw;font-weight:700;color:#f5f4e8;background:#20545e;padding:1.65cqw 0;border:0;border-radius:1cqw;box-shadow:none}
+.portrait-redesign .portrait-song-callout{font-size:1.9cqw;font-weight:500;color:#386b6d;background:none;border:0;box-shadow:none;padding:0;margin:1.5cqw 0 0;white-space:nowrap}
+.portrait-redesign .music{top:39.3%;right:0;width:27%;height:25%;padding:2.4cqw 1.6cqw;background:#f2f3e8}
+.portrait-redesign .music .now-label{color:#6c8988;font-size:1.65cqw;font-weight:500;margin:2cqw .6cqw 1cqw;letter-spacing:.08cqw}
+.portrait-redesign .music h3{font-size:2.85cqw;background:#dbe8db;color:#214f5a;border:0;border-left:.5cqw solid #7eaa8f;border-radius:.6cqw;box-shadow:none;padding:1.2cqw .9cqw;line-height:1.5}
+.portrait-redesign .music h3:after{color:#649a86;font-size:1.7cqw}
+.portrait-redesign #scene-queue{font-size:2.55cqw;margin-top:1.6cqw;gap:0}
+.portrait-redesign #scene-queue li{border-radius:0;background:none;color:#365964;box-shadow:none;border-bottom:1px solid #d5e1d9;padding:1.3cqw .7cqw;line-height:1.5;min-height:0}
+.portrait-redesign #scene-queue li small{font-size:1.8cqw;color:#7b9b94}
+.portrait-redesign #scene-queue li.portrait-queue-empty{font-size:2.3cqw;color:#637e7f;background:none}
+.portrait-redesign .reply-card{left:0;bottom:3.5%;width:100%;height:17%;border-radius:2.5cqw;border:1px solid #e4eadc;background:#f6f3e8;box-shadow:0 2cqw 5cqw #001a2b33;padding:5.2cqw 3.8cqw 2cqw;z-index:4}
+.portrait-redesign .reply-card:before{display:none}
+.portrait-redesign .reply-question{display:none}
+.portrait-redesign .host-name{top:-2.7cqw;left:3cqw;font-size:2.7cqw;font-weight:700;border:1px solid #98b6ac;border-radius:5cqw;background:#244f59;color:#f6f1dc;box-shadow:none;padding:1.4cqw 2.5cqw;text-shadow:none;gap:1.3cqw}
+.portrait-redesign .reply-text{font-family:'Microsoft YaHei UI','Microsoft YaHei',sans-serif;font-size:3.65cqw!important;line-height:1.85;letter-spacing:.06cqw;font-weight:600;color:#193e4e;max-height:24cqw}
+.portrait-redesign .reply-card:after{content:'”';font:10cqw Georgia,serif;top:-4.5cqw;right:3cqw;transform:none;color:#d8b97c;text-shadow:none;width:auto;height:auto}
+.portrait-redesign .scene-corner{left:0;bottom:0;font-size:1.5cqw;letter-spacing:.3cqw;color:#9ebebc}
+.portrait-redesign .roaming-cat{width:11cqw}
+.portrait-redesign .scene{--dance-w:84%;--dance-y:50%}
+@media(prefers-reduced-motion:reduce){.portrait-redesign .character-puppet{animation:none}}

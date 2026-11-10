@@ -1,0 +1,12 @@
+node_modules/
+data/*
+!data/.gitkeep
+output/
+*.log
+.codex-remote-attachments/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+services/music-service/bin/

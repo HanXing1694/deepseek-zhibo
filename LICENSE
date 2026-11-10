@@ -1,0 +1,27 @@
+小鲸直播仓库包含多份独立许可。先看范围，再适用对应正文。
+
+1. 除第 2、3 条列出的部分外，本仓库中的原创源代码、文档和脚本以 ISC 许可证提供。著作权表示：hanxing，2026。
+
+2. 商业音乐下载、抖音网页采集、微软在线语音，以及没有授权书的图片和视频，已不在本仓库中。代码许可不覆盖观众数据或第三方服务。见 `DISCLAIMER.md` 与 `NOTICE.md`。
+
+3. 代码许可只规范软件的使用、复制、修改和再分发，并在适用法律允许的范围内限制对软件质量的担保。它不授予他人作品或平台数据的权利，也不排除依法不能排除或限制的责任。
+
+---
+
+ISC License
+
+Copyright (c) 2026 hanxing
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+上述免责只覆盖第 1 条范围内的软件，并且仅在适用法律允许的范围内有效。

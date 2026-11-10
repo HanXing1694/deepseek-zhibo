@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2560" viewBox="0 0 1440 2560" fill="none">
+<defs>
+ <linearGradient id="sea" x1="720" y1="0" x2="720" y2="2560" gradientUnits="userSpaceOnUse"><stop stop-color="#173e50"/><stop offset=".43" stop-color="#176079"/><stop offset="1" stop-color="#072d43"/></linearGradient>
+ <radialGradient id="light"><stop stop-color="#8bcac5" stop-opacity=".48"/><stop offset="1" stop-color="#72c5c1" stop-opacity="0"/></radialGradient>
+ <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1900" gradientUnits="userSpaceOnUse"><stop stop-color="#d4efda" stop-opacity=".12"/><stop offset="1" stop-color="#b0e8de" stop-opacity="0"/></linearGradient>
+ <pattern id="stars" width="240" height="280" patternUnits="userSpaceOnUse"><circle cx="22" cy="55" r="2" fill="#b5e6db" opacity=".28"/><circle cx="173" cy="198" r="1.5" fill="#b5e6db" opacity=".2"/></pattern>
+</defs>
+<path fill="url(#sea)" d="M0 0h1440v2560H0z"/>
+<ellipse cx="720" cy="1300" rx="690" ry="1200" fill="url(#light)"/>
+<path d="m400 0-330 2040h360L650 0zm420 0 50 2080h420L1030 0z" fill="url(#ray)"/>
+<path d="M84 2400V660C84 310 338 98 720 98s636 212 636 562v1740" stroke="#8bc2bf" stroke-opacity=".25" stroke-width="2"/>
+<path d="M110 2400V665c0-335 242-540 610-540s610 205 610 540v1735" stroke="#bdded0" stroke-opacity=".1" stroke-width="18"/>
+<path d="M85 688h1270M85 1974h1270" stroke="#a4d7cd" stroke-opacity=".13" stroke-width="2"/>
+<path fill="url(#stars)" d="M0 0h1440v2560H0z"/>
+<g stroke="#a0d6cd" opacity=".2"><circle cx="128" cy="1010" r="22"/><circle cx="1309" cy="775" r="12"/><circle cx="119" cy="1558" r="13"/><circle cx="1310" cy="1780" r="30"/><circle cx="1273" cy="1870" r="10"/></g>
+<g fill="#8cc9c3" opacity=".16"><path d="M1120 415c-68-54-139-54-188-14 52 47 124 59 188 14l44 23-10-44z"/><path d="M287 1753c-53-32-98-30-129 1 37 30 84 32 129-1l29 12-7-27z"/></g>
+<g stroke="#90c9b8" stroke-linecap="round" stroke-width="7" opacity=".24"><path d="M60 2560c50-90 43-232 3-319m25 200 62-70m-60-30-56-62m-1 154-29-38M1380 2560c-25-70-39-173 14-283m-32 189-57-68m60-17 50-46"/></g>
+<g stroke="#c3b584" stroke-width="2" opacity=".24"><path d="M140 2480q580-110 1160 0M140 2504q580-100 1160 0"/></g>
+<path d="M680 2460h80m-40-40v80" stroke="#cbb781" stroke-width="2" opacity=".6"/>
+</svg>

@@ -1,0 +1,77 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {mkdtemp,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+test('本机服务：密钥隔离、暂停、点歌去重、移出与请求校验',async t=>{
+ const dir=await mkdtemp(path.join(os.tmpdir(),'whale-test-'));
+ const port=33219, base=`http://127.0.0.1:${port}`;
+ const child=spawn(process.execPath,['--import','./scripts/deepseek-fixture.mjs','server.js'],{env:{...process.env,PORT:String(port),WHALE_DATA_DIR:dir,DEEPSEEK_API_KEY:''},stdio:['ignore','pipe','pipe']});
+ t.after(async()=>{child.kill();await new Promise(resolve=>child.once('exit',resolve));await rm(dir,{recursive:true,force:true});});
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);child.once('exit',code=>reject(new Error(`server exited ${code}`)));});
+ const call=async(route,data)=>{const r=await fetch(base+'/api/'+route,data===undefined?{}:{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});return {status:r.status,data:await r.json()};};
+ assert.equal((await call('run',{running:true})).status,400);
+ const saved=await call('settings',{apiKey:'secret-test-key',autoReply:false,qqSearchX:0});assert.equal(saved.data.apiKey,undefined);assert.equal(saved.data.hasApiKey,true);
+ const config=await call('settings');assert.equal(JSON.stringify(config).includes('secret-test-key'),false);
+ await call('test-comment',{user:'a',text:'点歌 晴天'});assert.equal((await call('state')).data.songs.length,0);
+ await call('run',{running:true});await call('test-comment',{user:'a',text:'点歌 晴天'});await call('test-comment',{user:'b',text:'点歌 晴天'});
+ let state=(await call('state')).data;assert.equal(state.songs.length,0);assert.equal(state.comments.at(-1).source,'test');assert.match(state.logs.at(-1).message,/点歌已关闭/);
+ await call('test-comment',{user:'歌手点歌观众',text:'点歌 周杰伦'});
+ await call('test-comment',{user:'另一个观众',text:'点歌 晴天 周杰伦'});
+ assert.equal((await call('state')).data.songs.length,0);
+ await call('test-comment',{user:'无结果观众',text:'点歌 不存在的音乐xyz'});
+ assert.equal((await call('state')).data.songs.length,0);
+ await call('test-comment',{user:'网络异常观众',text:'点歌 超时测试'});
+ assert.equal((await call('state')).data.songs.length,0);
+ const pendingRequest=call('test-comment',{user:'慢速观众',text:'点歌 慢速测试'});
+ await new Promise(resolve=>setTimeout(resolve,50));await call('run',{running:false});await pendingRequest;
+ assert.equal((await call('state')).data.songs.length,0);
+ await call('run',{running:false});await call('test-comment',{text:'点歌 稻香'});assert.equal((await call('state')).data.songs.length,0);
+ const forbidden=await fetch(base+'/api/settings',{method:'POST',headers:{'content-type':'application/json',origin:'https://evil.example'},body:'{}'});assert.equal(forbidden.status,403);
+ const invalid=await fetch(base+'/api/settings',{method:'POST',headers:{'content-type':'text/plain'},body:'{}'});assert.equal(invalid.status,400);
+ const markup=await (await fetch(base+'/')).text();assert.ok(markup.includes('小鲸直播'));assert.equal(markup.includes('secret-test-key'),false);
+ await call('settings',{hostNickname:'Han_Skr',autoReply:true,cooldown:1});await call('run',{running:true});
+ await call('test-comment',{user:'Han_Skr',text:'进入了直播间'});
+ let greeting=(await call('state')).data;
+ for(let i=0;i<30&&greeting.reply?.kind!=='host';i++){await new Promise(resolve=>setTimeout(resolve,100));greeting=(await call('state')).data;}
+ assert.equal(greeting.reply.kind,'host');assert.equal(greeting.reply.user,'Han_Skr');
+ await call('test-comment',{user:'Han_Skr',text:'进入了直播间'});
+ await new Promise(resolve=>setTimeout(resolve,1200));assert.equal((await call('state')).data.stats.replies,greeting.stats.replies);
+ await call('settings',{autoReply:true,cooldown:1});await call('run',{running:true});
+ await call('test-comment',{user:'柚柚',text:'来了',kind:'entry'});
+ let entry=(await call('state')).data;
+ for(let i=0;i<30&&entry.reply?.kind!=='entry';i++){await new Promise(resolve=>setTimeout(resolve,100));entry=(await call('state')).data;}
+ assert.equal(entry.reply.kind,'entry');assert.equal(entry.reply.question,'进入直播间');
+ assert.equal(entry.comments.at(-1).kind,'entry');assert.equal(entry.songs.length,0);
+ const before=(await call('state')).data.stats.replies;
+ for(let i=0;i<30;i++)await call('test-comment',{user:'点赞观众'+i,text:'为主播点赞了'});
+ assert.equal((await call('state')).data.stats.replies,before);
+ await call('test-comment',{user:'聊天观众',text:'你好呀'});
+ let current=(await call('state')).data;
+ for(let i=0;i<30 && current.reply.user!=='聊天观众';i++){
+   await new Promise(resolve=>setTimeout(resolve,100));current=(await call('state')).data;
+ }
+ assert.equal(current.reply.user,'聊天观众');assert.equal(current.stats.replies,before+1);
+ await new Promise(resolve=>setTimeout(resolve,15500));
+ current=(await call('state')).data;
+ assert.equal(current.stats.replies,before+2);assert.equal(current.reply.kind,'likes');
+ assert.equal(current.reply.question,'这段时间收到了30条点赞提醒');
+ await call('test-comment',{user:'新点赞',text:'为主播点赞了'});
+ assert.equal((await call('state')).data.stats.replies,before+2);
+ await call('settings',{autoReply:false,userSongCooldown:0});await call('run',{running:true});
+ await call('test-comment',{user:'自然点歌',text:'帮我放晴天'});
+ for(let i=0;i<40;i++){current=(await call('state')).data;if(current.logs.some(l=>l.message.includes('点歌已关闭')))break;await new Promise(r=>setTimeout(r,100));}
+ assert.equal(current.songs.length,0);
+ assert.ok(current.logs.some(l=>l.message.includes('点歌已关闭')));
+ await call('test-comment',{user:'重复点歌',text:'有没有周杰伦'});
+ await new Promise(r=>setTimeout(r,2200));assert.equal((await call('state')).data.songs.length,0);
+ await call('song/clear',{});
+ await call('test-comment',{user:'查询观众',text:'我的歌排到哪了'});
+ await new Promise(r=>setTimeout(r,1200));assert.equal((await call('state')).data.songs.length,0);
+ await call('run',{running:true});
+ await call('test-comment',{user:'暂停途中',text:'慢一点放晴天'});
+ await new Promise(r=>setTimeout(r,50));await call('run',{running:false});
+ await new Promise(r=>setTimeout(r,350));assert.equal((await call('state')).data.songs.length,0);
+ await call('run',{running:false});
+});

@@ -1,0 +1,25 @@
+{
+  "name": "whale-live",
+  "version": "1.0.0",
+  "description": "小鲸直播：本机画面、游戏与 DeepSeek 回复。不含音乐下载、抖音采集和在线语音。",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "node server.js --open",
+    "check": "node scripts/check.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "opencc-js": "1.4.2",
+    "playwright": "^1.64.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

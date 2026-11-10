@@ -1,0 +1,30 @@
+import {chromium} from 'playwright';
+import {spawn} from 'node:child_process';
+import {mkdtemp,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const dir=await mkdtemp(path.join(os.tmpdir(),'whale-ai-settings-'));
+const port=33429,base=`http://127.0.0.1:${port}`;
+const child=spawn(process.execPath,['server.js'],{env:{...process.env,PORT:String(port),WHALE_DATA_DIR:dir,DEEPSEEK_API_KEY:''},stdio:['ignore','pipe','pipe']});
+let browser;
+try{
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);child.once('exit',code=>reject(new Error(`server exited ${code}`)));});
+ await fetch(base+'/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({naturalSongs:false,adaptiveThinking:true,idleChatter:false,idleChatterSeconds:180})});
+ browser=await chromium.launch({channel:'msedge',headless:true});
+ const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'/?silent=1');await page.locator('#backend-badge').filter({hasText:'本机服务已连接'}).waitFor();
+ await page.locator('#settings-open').click();
+ assert.equal(await page.locator('[name=naturalSongs]').isChecked(),false);
+ assert.equal(await page.locator('[name=adaptiveThinking]').isChecked(),true);
+ assert.equal(await page.locator('[name=idleChatter]').isChecked(),false);
+ assert.equal(await page.locator('[name=idleChatterSeconds]').inputValue(),'180');
+ await page.locator('[name=naturalSongs]').check();await page.locator('[name=adaptiveThinking]').uncheck();await page.locator('[name=idleChatter]').check();
+ await page.locator('[name=idleChatterSeconds]').fill('150');
+ await page.locator('#settings-dialog').screenshot({path:'output/ai-settings.png'});
+ const saved=page.waitForResponse(r=>r.url().endsWith('/api/settings')&&r.request().method()==='POST');
+ await page.locator('#settings-form [type=submit]').click();assert.equal((await saved).ok(),true);
+ const config=await (await fetch(base+'/api/settings')).json();
+ assert.equal(config.naturalSongs,true);assert.equal(config.adaptiveThinking,false);assert.equal(config.idleChatter,true);assert.equal(config.idleChatterSeconds,150);
+ assert.deepEqual(errors,[]);console.log('AI settings verified: persisted switches, interval, form save, no page errors; live service untouched.');
+}finally{await browser?.close();const exited=new Promise(resolve=>child.once('exit',resolve));child.kill();await exited;await rm(dir,{recursive:true,force:true});}

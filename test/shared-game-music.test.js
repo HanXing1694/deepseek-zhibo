@@ -1,0 +1,25 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {RuntimeStore} from '../runtime-store.js';
+test('游戏和听歌共用曲目与队列：不中断入场、定时顺序播放、礼物排队不阻塞、退出不回退',async t=>{
+ const dir=await mkdtemp(path.join(os.tmpdir(),'whale-shared-music-')),base='http://127.0.0.1:33273/api/';let child;
+ const original={id:'original',title:'当前观众歌曲',artist:'歌手',user:'观众零',backend:'desk',position:42,duration:240,startedAt:Date.now()-42000,status:'正在播放'};
+ const waiting=[{id:'first',title:'第一首',artist:'歌手一',mid:'first',user:'观众一'},{id:'second',title:'第二首',artist:'歌手二',mid:'second',user:'观众二'}];
+ await writeFile(path.join(dir,'settings.json'),JSON.stringify({room:'123456',hostNickname:'主播',autoReply:false,naturalSongs:false,speech:true,musicVolume:.3,autoAdvanceSeconds:90}));
+ await new RuntimeStore(dir).save({running:true,connection:'disconnected',connectionWanted:false,songs:waiting,currentSong:original,danceQueue:[],comments:[],logs:[],stats:{comments:0,replies:0,tokens:0,songs:0}},'123456');
+ child=spawn(process.execPath,['--import','./scripts/live-program-fixture.mjs','server.js'],{env:{...process.env,PORT:'33273',WHALE_DATA_DIR:dir,DEEPSEEK_API_KEY:''},stdio:['ignore','pipe','pipe']});
+ t.after(async()=>{if(child.exitCode===null){const ended=new Promise(r=>child.once('exit',r));child.kill();await ended;}await rm(dir,{recursive:true,force:true});});
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);});
+ const call=async(route,data)=>{const r=await fetch(base+route,data===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const value=await r.json();assert.ok(r.ok,JSON.stringify(value));return value;};
+ const until=async predicate=>{for(let i=0;i<150;i++){const s=await call('state');if(predicate(s))return s;await new Promise(r=>setTimeout(r,50));}throw new Error('shared playlist timed out');};
+ const comment=(user,text)=>call('test-comment',{user,text});
+ await until(s=>s.currentSong?.id==='original');await comment('主播','你画我猜');let s=await call('state');assert.equal(s.currentSong.id,'original');assert.equal(s.currentSong.position,42);assert.deepEqual(s.songs,waiting);assert.equal(s.sharedMusic.track,'original');assert.equal((await call('music/status')).player.playing,false);
+ await comment('主播','开始画画');await call('test-gift',{id:'queued-gift',user:'送礼者',name:'小心心',count:1});assert.equal((await call('state')).danceQueue[0].remaining,1);
+ const skipped=await fetch(base+'next',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});assert.equal(skipped.ok,false);
+ await comment('主播','返回听歌');s=await until(s=>s.drawGame.phase==='off');assert.equal(s.currentSong.id,'original');assert.equal(s.sharedMusic.track,'original');
+ await call('run',{running:false});
+});

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {writeFile} from 'node:fs/promises';
+import {fatfishPersona} from '../fatfish-persona.js';
+const base='http://127.0.0.1:3210/api/';
+const [settings,before]=await Promise.all(['settings','state'].map(route=>fetch(base+route).then(r=>r.json())));
+assert.equal(settings.persona,fatfishPersona);assert.equal(before.running,true);assert.ok(['watching','receiving'].includes(before.connection));
+await new Promise(resolve=>setTimeout(resolve,2400));
+const after=await fetch(base+'state').then(r=>r.json());
+assert.equal(after.running,true);assert.ok(['watching','receiving'].includes(after.connection));
+if(before.currentSong?.id===after.currentSong?.id)assert.ok(after.currentSong.position>=before.currentSong.position,'Restored music is advancing');
+await writeFile('output/personality-after-state.json',JSON.stringify(after,null,2));
+console.log(JSON.stringify({personaSaved:true,running:after.running,connection:after.connection,detail:after.connectionDetail,song:after.currentSong?.title,position:after.currentSong?.position,queue:after.songs.length,newComments:after.stats.comments-before.stats.comments,recentLogs:after.logs.slice(-5)}));

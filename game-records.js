@@ -1,0 +1,23 @@
+// Real server adjudications only. Nicknames are the collector's current identity;
+// message IDs are not user IDs. Never merge different nicknames automatically.
+const DAY=86400000;
+export const liveDay=now=>new Date(now+4*3600000).toISOString().slice(0,10); // Shanghai 04:00 boundary (UTC+4)
+export class GameRecords{
+ constructor({saved,now=Date.now}={}){this.now=now;this.sessions=new Map((saved?.sessions||[]).map(s=>[s.id,s]));this.cycles=saved?.cycles||[];this.lastRecall=new Map();this.cache=new Map();this.trim();}
+ changed(){this.cache.clear();}
+ trim(){const cutoff=this.now()-30*DAY;for(const [id,s] of this.sessions)if(s.startedAt<cutoff)this.sessions.delete(id);this.cycles=this.cycles.filter(c=>c.startedAt>=cutoff).slice(-200);this.changed();}
+ begin(id,startedAt=this.now()){if(!id)return null;if(!this.sessions.has(id)){this.sessions.set(id,{id,startedAt,day:liveDay(startedAt),rows:[],finalized:false});this.changed();}return this.sessions.get(id);}
+ hit({sessionId,startedAt,round,user,points,competitive,at=this.now()}){const s=this.begin(sessionId,startedAt);if(!s||!user||s.finalized||s.forgotten?.includes(user))return false;let r=s.rows.find(r=>r.user===user);if(!r){r={user,rounds:[],points:0,dayPoints:0,answers:0,reachedAt:at,champion:false};s.rows.push(r);}if(r.rounds.includes(round))return false;r.rounds.push(round);r.points+=points;r.dayPoints+=competitive?points:0;r.answers++;if(competitive)r.reachedAt=at;this.changed();return true;}
+ finish(id,ranking=[]){const s=this.sessions.get(id);if(!s||s.finalized)return false;s.finalized=true;for(const rank of ranking){const row=s.rows.find(r=>r.user===rank.user);if(row)row.points=rank.score;}const top=ranking[0];if(top&&!s.forgotten?.includes(top.user)){const row=s.rows.find(r=>r.user===top.user);if(row?.answers>0){row.points=top.score;row.champion=true;}}this.changed();return true;}
+ rows(day){const key=day||'recent';if(this.cache.has(key))return this.cache.get(key);const users=new Map();for(const s of this.sessions.values()){if(day&&s.day!==day)continue;for(const r of s.rows){const row=users.get(r.user)||{user:r.user,score:0,answers:0,games:0,champions:0,best:0,reachedAt:0};row.score+=r.dayPoints;row.answers+=r.answers;row.games+=r.answers>0?1:0;row.champions+=r.champion?1:0;row.best=Math.max(row.best,r.points);if(r.dayPoints>0)row.reachedAt=Math.max(row.reachedAt,r.reachedAt);users.set(r.user,row);}}
+  const rows=[...users.values()].sort((a,b)=>b.score-a.score||a.reachedAt-b.reachedAt||a.user.localeCompare(b.user));this.cache.set(key,rows);return rows;
+ }
+ ranking(day=liveDay(this.now())){return this.rows(day).filter(r=>r.score>0);}
+ profile(user,day=liveDay(this.now())){const rank=this.ranking(day),today=this.rows(day).find(r=>r.user===user),recent=this.rows().find(r=>r.user===user);return {user,day,today:today||{score:0,answers:0,games:0,champions:0},rank:rank.findIndex(r=>r.user===user)+1,recent:recent||{score:0,answers:0,games:0,champions:0,best:0}};}
+ recall(user){const p=this.profile(user);if(!p.recent.games||this.now()-(this.lastRecall.get(user)||0)<30*60000)return null;this.lastRecall.set(user,this.now());return {说明:'按昵称关联；近30天真实游戏成绩，不是身份认证。',近30天答对:p.recent.answers,近30天冠军:p.recent.champions,单场最高分:p.recent.best};}
+ forget(user){for(const s of this.sessions.values()){if(s.rows.some(r=>r.user===user)&&!s.finalized)s.forgotten=[...new Set([...(s.forgotten||[]),user])];s.rows=s.rows.filter(r=>r.user!==user);}for(const c of this.cycles)for(const key of ['drawUsers','musicUsers','songUsers'])c[key]=c[key].filter(u=>u!==user);this.lastRecall.delete(user);this.changed();}
+ cycle(id){if(!id)return null;let c=this.cycles.find(c=>c.id===id);if(!c){c={id,startedAt:this.now(),drawUsers:[],musicUsers:[],songUsers:[]};this.cycles.push(c);this.cycles=this.cycles.slice(-200);}return c;}
+ activity(id,phase,user,{song=false}={}){const c=this.cycle(id);if(!c||!user)return;const key=phase==='draw'?'drawUsers':'musicUsers';if(c[key].length<5000&&!c[key].includes(user))c[key].push(user);if(song&&c.songUsers.length<5000&&!c.songUsers.includes(user))c.songUsers.push(user);}
+ metrics(id){const c=this.cycles.find(c=>c.id===id);if(!c)return {participants:0,songAfterDraw:0,crossStage:0,returnPlayers:0};const index=this.cycles.indexOf(c),previous=this.cycles[index-1];return {participants:c.drawUsers.length,songAfterDraw:c.songUsers.filter(u=>c.drawUsers.includes(u)).length,crossStage:c.musicUsers.filter(u=>c.drawUsers.includes(u)).length,returnPlayers:previous?c.drawUsers.filter(u=>previous.drawUsers.includes(u)).length:0};}
+ snapshot(){this.trim();return {sessions:[...this.sessions.values()],cycles:this.cycles};}
+}
